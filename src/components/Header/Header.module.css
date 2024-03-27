@@ -1,0 +1,24 @@
+body{
+    overflow-x: hidden;
+}
+.Header{
+    /*width: 100vw;*/
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    height: 10vh;
+    background: #dcb0b0;
+}
+
+a{
+    margin-left: 30px;
+    margin-right: 20px;
+    text-decoration: none;
+    color: #780891;
+    font-family: "Playfair Display", serif;
+    font-weight:600;
+    font-size: 27px;
+}
+.Header a[class='active'] {
+    color: #910863;
+}

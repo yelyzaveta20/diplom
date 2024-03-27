@@ -1,0 +1,20 @@
+.Informations{
+    width: 100vw;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    background: #fdf7f7;
+}
+.sometext{
+    width: 74vw;
+}
+h2{
+    color: #010198;
+}
+h1{
+    color: #0202f5;
+}
+li{
+    color: #780891;
+}

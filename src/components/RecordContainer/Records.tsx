@@ -1,7 +1,7 @@
 const Records = () => {
     return (
         <div>
-            Records
+            <h1>Запис на донорство</h1>
         </div>
     );
 };

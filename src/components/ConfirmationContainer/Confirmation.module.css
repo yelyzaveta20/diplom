@@ -1,0 +1,26 @@
+.Confirmation{
+    width: 100vw;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    background: #fdf7f7;
+    font-family: "Crimson Text", serif;
+}
+.agree{
+    width: 74vw;
+}
+.question{
+        font-size: 25px;
+        color: #9b0429;
+        font-weight: bold;
+        text-align: center;
+}
+
+.agreeNav{
+    display: flex;
+    justify-content: space-around;
+}
+a:hover{
+
+}

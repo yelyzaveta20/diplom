@@ -5,6 +5,7 @@
     justify-content: center;
     align-items: center;
     background: #fdf7f7;
+    font-family: "Crimson Text", serif;
 }
 .sometext{
     width: 74vw;
@@ -13,8 +14,21 @@ h2{
     color: #010198;
 }
 h1{
-    color: #0202f5;
+    color: #67069b;
 }
 li{
-    color: #780891;
+    color: #450354;
+    font-size: 17px;
+}
+ul{
+    list-style-type: circle;
+    color: #011001;
+}
+p{
+    font-size: 18px;
+    color: #450354;
+}
+h3{
+    color: #2b012d;
+    font-weight: bold;
 }

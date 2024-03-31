@@ -5,6 +5,8 @@ import {RecordPage} from "./pages/RecordPage";
 import {ConfirmationPage} from "./pages/ConfirmationPage";
 import {RegisterPage} from "./pages/RegisterPage";
 import {LoginPage} from "./pages/LoginPage";
+import {Admin} from "./components/Admin";
+import {RecordAuth} from "./components/recordAuth/recordAuth";
 
 
 const router=createBrowserRouter([
@@ -23,10 +25,16 @@ const router=createBrowserRouter([
                 path:'record', element:<RecordPage/>
             },
             {
+                path:'recordAuth', element:<RecordAuth/>
+            },
+            {
                 path:'login', element:<LoginPage/>
             },
             {
                 path:'register', element:<RegisterPage/>
+            },
+            {
+                path:'admin', element:<Admin/>
             }
         ]
     }

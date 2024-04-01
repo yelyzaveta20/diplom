@@ -1,0 +1,21 @@
+.Login{
+    width: 100vw;
+    height: 80vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.forming{
+    width: 20vw;
+    height: 20vh;
+    border: 1px black solid;
+   display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+/*.div{*/
+/*    display: flex;*/
+/*    justify-content: center;*/
+/*    align-items: center;*/
+/*}*/

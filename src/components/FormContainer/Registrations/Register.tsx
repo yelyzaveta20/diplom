@@ -1,26 +1,9 @@
 import {useNavigate} from "react-router-dom";
 import {supabase} from "../../../constans/dT";
 import {FormEvent, useState} from "react";
-// @ts-ignore
-import { SupabaseAuthError } from '@supabase/supabase-js';
+
 
 const Register = () => {
-//     let navigate = useNavigate();
-//     const handle=()=>{
-//         navigate('/login')
-//     }
-//     return (
-//         <div>
-//             <p>Реєстрація</p>
-//             <form>
-//                 <input type="text" placeholder="Напишіть ваш логін"/>
-//                 <input type="text" placeholder="Напишіть ваш пароль"/>
-//                 <button>Зареєструватися</button>
-//                 <button onClick={handle}>Увійти</button>
-//             </form>
-//         </div>
-//     );
-// };
     let navigate = useNavigate();
     const [login, setLogin] = useState('');
     const [password, setPassword] = useState('');
@@ -59,14 +42,19 @@ const Register = () => {
 
     return (
         <div>
-            <p>Регистрация</p>
-            {errorMessage && <p>{errorMessage}</p>}
-            <form onSubmit={handleRegister}>
-                <input type="text" placeholder="Введите ваш логин" value={login} onChange={(e) => setLogin(e.target.value)} />
-                <input type="password" placeholder="Введите ваш пароль" value={password} onChange={(e) => setPassword(e.target.value)} />
-                <button type="submit">Зарегистрироваться</button>
-                <button type="button" onClick={handleLogin}>Уже есть аккаунт? Войти</button>
-            </form>
+            <div>
+                <p>Регистрация</p>
+                {errorMessage && <p>{errorMessage}</p>}
+                <form onSubmit={handleRegister}>
+                    <input type="text" placeholder="Введите ваш логин" value={login}
+                           onChange={(e) => setLogin(e.target.value)}/>
+                    <input type="password" placeholder="Введите ваш пароль" value={password}
+                           onChange={(e) => setPassword(e.target.value)}/>
+                    <button type="submit">Зарегистрироваться</button>
+                    <button type="button" onClick={handleLogin}>Уже есть аккаунт? Войти</button>
+                </form>
+            </div>
+
         </div>
     );
 };

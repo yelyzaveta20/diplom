@@ -1,6 +1,7 @@
 import {useNavigate} from "react-router-dom";
 import {supabase} from "../../../constans/dT";
 import {FormEvent, useState} from "react";
+import css from './Login.module.css'
 
 const Login = () => {
 
@@ -47,15 +48,25 @@ const Login = () => {
     };
 
     return (
-        <div>
-            <p>Вход</p>
-            <form onSubmit={handleLogin}>
-                <input type="text" placeholder="Введите ваш логин" value={login} onChange={(e) => setLogin(e.target.value)} />
-                <input type="password" placeholder="Введите ваш пароль" value={password} onChange={(e) => setPassword(e.target.value)} />
-                <button type="submit">Войти</button>
-                <button type="button" onClick={handleRegister}>Зарегистрироваться</button>
-            </form>
-            {errorMessage && <p>{errorMessage}</p>}
+        <div className={css.Login}>
+            <div className={css.forming}>
+                <div className={css.div}>
+                    <p>Вход</p>
+                    <form onSubmit={handleLogin}>
+                        <input type="text" placeholder="Введите ваш логин" value={login}
+                               onChange={(e) => setLogin(e.target.value)}/>
+                        <input type="password" placeholder="Введите ваш пароль" value={password}
+                               onChange={(e) => setPassword(e.target.value)}/>
+                        <div>
+                            <button type="submit">Войти</button>
+                            <button type="button" onClick={handleRegister}>Зарегистрироваться</button>
+                        </div>
+                    </form>
+                    {errorMessage && <p>{errorMessage}</p>}
+                </div>
+
+            </div>
+
         </div>
     );
 };

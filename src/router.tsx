@@ -7,9 +7,13 @@ import {RegisterPage} from "./pages/RegisterPage";
 import {LoginPage} from "./pages/LoginPage";
 import {Admin} from "./components/Admin";
 import {RecordAuth} from "./components/recordAuth/recordAuth";
+import {useState} from "react";
+import {DonorPage} from "./pages/DonorPage";
+import {RecordAuthPage} from "./pages/RecordAuthPage";
 
 
 const router=createBrowserRouter([
+
     {
         path:'', element:<MainLayout/> , children:[
             {
@@ -25,16 +29,18 @@ const router=createBrowserRouter([
                 path:'record', element:<RecordPage/>
             },
             {
-                path:'recordAuth', element:<RecordAuth/>
+                path:'/record-auth/:id_registration', element:<RecordAuthPage/>
             },
             {
-                path:'login', element:<LoginPage/>
+                path:'login', element:<LoginPage />
             },
             {
                 path:'register', element:<RegisterPage/>
             },
             {
                 path:'admin', element:<Admin/>
+            },{
+                path:'/donor/:id', element:<DonorPage/>
             }
         ]
     }

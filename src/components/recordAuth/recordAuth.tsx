@@ -5,14 +5,29 @@ import {supabase} from "../../constans/dT";
 const RecordAuth = () => {
     const navigate = useNavigate();
     const { id_registration } = useParams<{ id_registration: string }>();
-    console.log(id_registration)
+
     const [name, setName] = useState('');
     const [surname, setSurname] = useState('');
     const [age, setAge] = useState('');
-
+    const [errorMessage, setErrorMessage] = useState('');
+    const namePattern = /^[А-Яа-яЁёҐґІіЇїЄєA-Za-z\s']+$/;
+    const agePattern = /^(1[8-9]|[2-9][0-9]|100)$/;
     const handleFormSubmit = async (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
+        if (!namePattern.test(name)) {
+            setErrorMessage('Некоректне ім\'я. Використовуйте лише букви.');
+            return;
+        }
 
+        if (!namePattern.test(surname)) {
+            setErrorMessage('Некоректне прізвище. Використовуйте лише букви.');
+            return;
+        }
+
+        if (!agePattern.test(age)) {
+            setErrorMessage('Некоректний вік. Введіть вік від 18 до 100.');
+            return;
+        }
         try {
             // Insert user data into the database
             const { data: newUser, error } = await supabase
@@ -37,12 +52,16 @@ const RecordAuth = () => {
 
     return (
         <div>
+            <p>
+                Ім'я та прізвище має бути українськими літерами, а вік від 18 років
+            </p>
             <form onSubmit={handleFormSubmit}>
-                <input type="text" placeholder="Введіть ваше ім'я" value={name} onChange={(e) => setName(e.target.value)} />
-                <input type="text" placeholder="Введіть ваше прізвище" value={surname} onChange={(e) => setSurname(e.target.value)} />
-                <input type="text" placeholder="Введіть ваш вік" value={age} onChange={(e) => setAge(e.target.value)} />
+                <input type="text" placeholder="Введіть ваше ім'я" value={name} onChange={(e) => setName(e.target.value)} pattern="[A-Za-zА-Яа-яЁё]{2,20}" />
+                <input type="text" placeholder="Введіть ваше прізвище" value={surname} onChange={(e) => setSurname(e.target.value)} pattern="[A-Za-zА-Яа-яЁё]{2,20}"/>
+                <input type="text" placeholder="Введіть ваш вік" value={age} onChange={(e) => setAge(e.target.value)} pattern="[(1[8-9]|[2-9][0-9]|100)]"/>
                 <button type="submit">Зберегти</button>
             </form>
+            {errorMessage && <p>{errorMessage}</p>}
         </div>
     );
 };

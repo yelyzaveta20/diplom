@@ -40,8 +40,13 @@ const Header = () => {
 
             {isUser && (
                 <div className={css.navigator}>
-                    <NavLink to={'record'}>Зробити запис</NavLink>
+                    <NavLink to={'registration-donation'}>Зробити запис</NavLink>
                     <button onClick={handleLogout}>Вийти</button>
+                    <div>
+                        <NavLink to={'/donor/:id_registration'}><img alt={'account'}
+                            src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAu0lEQVR4nO2U0QnCMBRFzwQdQOufpcPoKrqG6CgSOoMWl1DoCIIt6G+k8AoaNKnk9UP0wv1JyjmkLy38SiaAARppAeSa8DNgnbZrqYbAvIB33WoIGo+g1hDYQAc9wUVDUHgE7Xyik3tuUYZSUrkxtdRowr83Y2ADVEAJJA97iaxV8szoU/gSuDlD3QFTefd7Z+8KLPrC1z0+LvumqxB8HgG30plPcFIQHH2CWLgN/Z8GFxwU4GVgzv/wlDuj6q8tGM8DawAAAABJRU5ErkJggg=="/>
+                        </NavLink>
+                    </div>
                 </div>
             )}
 

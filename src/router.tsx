@@ -10,6 +10,7 @@ import {RecordAuth} from "./components/recordAuth/recordAuth";
 import {useState} from "react";
 import {DonorPage} from "./pages/DonorPage";
 import {RecordAuthPage} from "./pages/RecordAuthPage";
+import {RegistrationDonationPage} from "./pages/RegistrationDonationPage";
 
 
 const router=createBrowserRouter([
@@ -39,8 +40,12 @@ const router=createBrowserRouter([
             },
             {
                 path:'admin', element:<Admin/>
-            },{
-                path:'/donor/:id', element:<DonorPage/>
+            },
+            {
+                path:'/donor/:id_registration', element:<DonorPage/>
+            },
+            {
+            path:'registration-donation', element:<RegistrationDonationPage/>
             }
         ]
     }

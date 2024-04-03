@@ -33,7 +33,7 @@ const Login = () => {
             // Если найден пользователь с введенным логином и паролем
             if (loginations && loginations.length > 0) {
                 const user = loginations[0]; // Assuming you're interested in the first user if multiple are found
-
+                localStorage.setItem('id_registration', user.id_registration);
                 // Set id_registration in state or variable
 
 

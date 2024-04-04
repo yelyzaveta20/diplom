@@ -5,33 +5,73 @@ import {useParams} from "react-router-dom";
 import {IDonor} from "./InterfaseDonr";
 
 const Donor = () => {
-    const { id_registration } = useParams<{ id_registration: string }>(); // Get id_registration from the URL
-    const [userData, setUserData] = useState<any>(null); // State to store user data
-    const [errorMessage, setErrorMessage] = useState('');
+    const { id_registration } = useParams<{ id_registration: string }>();
+    const [userData, setUserData] = useState<any>(null);
+    const [donationData, setDonationData] = useState<any[]>([]);
+    const [errorMessage, setErrorMessage] = useState<string>('');
 
     useEffect(() => {
         fetchData();
-    }, [id_registration]); // Fetch data whenever id_registration changes
+    }, [id_registration]);
 
     const fetchData = async () => {
         try {
             // Fetch user data from the database
-            const { data: useraccount, error } = await supabase
+            const { data: useraccount, error: userError } = await supabase
                 .from('user')
-                .select('*');
+                .select('*')
+                .eq('id_registration', id_registration);
 
-            if (error) {
-                throw error;
+            if (userError) {
+                throw userError;
             }
 
-            // Find the user whose id_registration matches the one from the URL
-            const matchedUser = useraccount.find((user: any) =>(user.id_registration.toString()) === id_registration)
+            if (useraccount && useraccount.length > 0) {
+                // Set the user data to the state
+                setUserData(useraccount[0]);
 
-            if (matchedUser) {
-                // Set the matched user data to the state
-                setUserData(matchedUser);
+                // Fetch donation data from the database
+                const { data: hoursData, error: hoursError } = await supabase
+                    .from('hours')
+                    .select('*')
+                    .eq('id_registration', id_registration);
+
+                if (hoursError) {
+                    throw hoursError;
+                }
+
+                // Fetch days data from the database
+                const { data: daysData, error: daysError } = await supabase
+                    .from('days')
+                    .select('*');
+
+                if (daysError) {
+                    throw daysError;
+                }
+
+                // Fetch months data from the database
+                const { data: monthsData, error: monthsError } = await supabase
+                    .from('months')
+                    .select('*');
+
+                if (monthsError) {
+                    throw monthsError;
+                }
+
+                // Combine donation data with day and month information
+                const donationWithDetails = hoursData.map((hour: any) => {
+                    const day = daysData.find((day: any) => day.day_id === hour.day_id);
+                    const month = monthsData.find((month: any) => month.month_id === day.month_id);
+                    return {
+                        hour_value: hour.hour_value,
+                        day_value: day.day_value,
+                        month_name: month.month_name,
+                    };
+                });
+
+                // Set the donation data with details to the state
+                setDonationData(donationWithDetails);
             } else {
-                // If no user matches the id_registration, set an error message
                 setErrorMessage('Пользователь с указанным id_registration не найден');
             }
         } catch (error) {
@@ -49,7 +89,18 @@ const Donor = () => {
                     <p>Возраст: {userData.age}</p>
                 </div>
             )}
-            {errorMessage && <p>{errorMessage}</p>}
+            <h3>Записи на донорство:</h3>
+            {donationData.length > 0 ? (
+                <ul>
+                    {donationData.map((donation: any, index: number) => (
+                        <li key={index}>
+                            Місяць: {donation.month_name}, День: {donation.day_value}, Час: {donation.hour_value}
+                        </li>
+                    ))}
+                </ul>
+            ) : (
+                <p>{errorMessage}</p>
+            )}
         </div>
     );
 };

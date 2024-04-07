@@ -12,16 +12,65 @@ const RegistrationDonation = () => {
     const [selectedDay, setSelectedDay] = useState<number | null>(null);
     const [selectedHourId, setSelectedHourId] = useState<number | null>(null);
     const [errorMessage, setErrorMessage] = useState<string>('');
+    const [places, setPlaces] = useState<any[]>([]);
+    const [selectedPlace, setSelectedPlace] = useState<number | null>(null);
+    const [weekdays, setWeekdays] = useState<any[]>([]); // Состояние для хранения списка дней недели
 
     useEffect(() => {
-        fetchData();
+        fetchPlaces(); // Вызываем функцию получения списка мест
+        fetchWeekdays(); // Вызываем функцию получения списка дней недели
     }, []);
 
-    const fetchData = async () => {
+    // Функция для получения списка мест
+    const fetchPlaces = async () => {
+        try {
+            const { data: placesData, error: placesError } = await supabase
+                .from('place')
+                .select('*');
+
+            if (placesError) {
+                throw placesError;
+            }
+            setPlaces(placesData);
+        } catch (error) {
+            setErrorMessage('Ошибка при получении списка мест');
+        }
+    };
+
+    // Функция для получения списка дней недели
+    const fetchWeekdays = async () => {
+        try {
+            const { data: weekdaysData, error: weekdaysError } = await supabase
+                .from('weekday')
+                .select('*');
+
+            if (weekdaysError) {
+                throw weekdaysError;
+            }
+            setWeekdays(weekdaysData);
+        } catch (error) {
+            setErrorMessage('Ошибка при получении списка дней недели');
+        }
+    };
+
+    // Функция для обработки выбора места
+    const handlePlaceClick = (placeId: number) => {
+        setSelectedPlace(placeId);
+        setMonths([]);
+        setSelectedMonth(null);
+        setDays([]);
+        setSelectedDay(null);
+        setSelectedHourId(null);
+        fetchData(placeId);
+    };
+
+    // Функция для получения данных о месяцах для выбранного места
+    const fetchData = async (placeId: number) => {
         try {
             const { data: monthsData, error: monthsError } = await supabase
                 .from('months')
-                .select('*');
+                .select('*')
+                .eq('id_place', placeId);
 
             if (monthsError) {
                 throw monthsError;
@@ -89,50 +138,61 @@ const RegistrationDonation = () => {
                 .update({ id_registration: registrationId })
                 .eq('hour_id', selectedHourId);
 
-            // Обновить hours, чтобы увидеть изменения после записи
-            const { data: updatedHoursData } = await supabase
-                .from('hours')
-                .select('*')
-                .eq('day_id', selectedDay)
-                .is('id_registration', null);
-
-
-            setIsRecorded(true); // Установить флаг успешной записи
-            setErrorMessage(''); // Сбросить сообщение об ошибке
+            setIsRecorded(true);
+            setErrorMessage('');
         } catch (error) {
-            setIsRecorded(false); // Установить флаг успешной записи в false в случае ошибки
+            setIsRecorded(false);
             setErrorMessage('Ошибка при добавлении записи');
         }
     };
 
     return (
         <div>
-            <h2>Місяці</h2>
+            <h2>Місце</h2>
             <div>
-                {months.map(month => (
+                {places.map(place => (
                     <button
-                        key={month.month_id}
-                        onClick={() => handleMonthClick(month.month_id)}
-                        style={{ marginRight: '10px', marginBottom: '10px' }}
+                        key={place.id_place}
+                        onClick={() => handlePlaceClick(place.id_place)}
+                        style={{marginRight: '10px', marginBottom: '10px'}}
                     >
-                        {month.month_name}
+                        {place.address}
                     </button>
                 ))}
             </div>
+            {
+                selectedPlace && (
+                    <>
+                        <h2>Місяць</h2>
+                        {months.map(month => (
+                            <button
+                                key={month.month_id}
+                                onClick={() => handleMonthClick(month.month_id)}
+                                style={{marginRight: '10px', marginBottom: '10px'}}
+                            >
+                                {month.month_name}
+                            </button>
+                        ))}
+                    </>)
+            }
+
             {selectedMonth && (
                 <>
                     <h2>Дні</h2>
                     <div>
                         {days.length > 0 ? (
-                            days.map(day => (
-                                <button
-                                    key={day.day_id}
-                                    onClick={() => handleDayClick(day.day_id)}
-                                    style={{ marginRight: '10px', marginBottom: '10px' }}
-                                >
-                                    День {day.day_value}
-                                </button>
-                            ))
+                            days.map(day => {
+                                const weekday = weekdays.find(w => w.weekday_id === day.weekday_id);
+                                return (
+                                    <button
+                                        key={day.day_id}
+                                        onClick={() => handleDayClick(day.day_id)}
+                                        style={{marginRight: '10px', marginBottom: '10px'}}
+                                    >
+                                        День {day.day_value} ({weekday && weekday.weekday})
+                                    </button>
+                                );
+                            })
                         ) : (
                             <p>На обраний день немає вільного місця</p>
                         )}
@@ -148,7 +208,7 @@ const RegistrationDonation = () => {
                                 <button
                                     key={hour.hour_id}
                                     onClick={() => handleHourClick(hour.hour_id)}
-                                    style={{ marginRight: '10px', marginBottom: '10px' }}
+                                    style={{marginRight: '10px', marginBottom: '10px'}}
                                 >
                                     Час {hour.hour_value}
                                 </button>
@@ -164,11 +224,12 @@ const RegistrationDonation = () => {
                     <button onClick={handle}>Записатися</button>
                 </>
             )}
-            {isRecorded && <p>Запис успішно зроблено, перейдіть до особистого кабінету щоб переглянути інфорацію <NavLink
-                to={`/donor/${localStorage.getItem('id_registration')}`}>
-                <img alt={'account'}
-                     src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAu0lEQVR4nO2U0QnCMBRFzwQdQOufpcPoKrqG6CgSOoMWl1DoCIIt6G+k8AoaNKnk9UP0wv1JyjmkLy38SiaAARppAeSa8DNgnbZrqYbAvIB33WoIGo+g1hDYQAc9wUVDUHgE7Xyik3tuUYZSUrkxtdRowr83Y2ADVEAJJA97iaxV8szoU/gSuDlD3QFTefd7Z+8KLPrC1z0+LvumqxB8HgG30plPcFIQHH2CWLgN/Z8GFxwU4GVgzv/wlDuj6q8tGM8DawAAAABJRU5ErkJggg=="/>
-            </NavLink></p>}
+            {isRecorded &&
+                <p>Запис успішно зроблено, перейдіть до особистого кабінету щоб переглянути інфорацію <NavLink
+                    to={`/donor/${localStorage.getItem('id_registration')}`}>
+                    <img alt={'account'}
+                         src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAu0lEQVR4nO2U0QnCMBRFzwQdQOufpcPoKrqG6CgSOoMWl1DoCIIt6G+k8AoaNKnk9UP0wv1JyjmkLy38SiaAARppAeSa8DNgnbZrqYbAvIB33WoIGo+g1hDYQAc9wUVDUHgE7Xyik3tuUYZSUrkxtdRowr83Y2ADVEAJJA97iaxV8szoU/gSuDlD3QFTefd7Z+8KLPrC1z0+LvumqxB8HgG30plPcFIQHH2CWLgN/Z8GFxwU4GVgzv/wlDuj6q8tGM8DawAAAABJRU5ErkJggg=="/>
+                </NavLink></p>}
             {errorMessage && <p>{errorMessage}</p>}
         </div>
     );

@@ -16,7 +16,6 @@ const Donor = () => {
 
     const fetchData = async () => {
         try {
-            // Fetch user data from the database
             const { data: useraccount, error: userError } = await supabase
                 .from('user')
                 .select('*')
@@ -27,10 +26,8 @@ const Donor = () => {
             }
 
             if (useraccount && useraccount.length > 0) {
-                // Set the user data to the state
                 setUserData(useraccount[0]);
 
-                // Fetch donation data from the database
                 const { data: hoursData, error: hoursError } = await supabase
                     .from('hours')
                     .select('*')
@@ -40,7 +37,6 @@ const Donor = () => {
                     throw hoursError;
                 }
 
-                // Fetch days data from the database
                 const { data: daysData, error: daysError } = await supabase
                     .from('days')
                     .select('*');
@@ -49,7 +45,6 @@ const Donor = () => {
                     throw daysError;
                 }
 
-                // Fetch months data from the database
                 const { data: monthsData, error: monthsError } = await supabase
                     .from('months')
                     .select('*');
@@ -58,24 +53,57 @@ const Donor = () => {
                     throw monthsError;
                 }
 
-                // Combine donation data with day and month information
+                const { data: placesData, error: placesError } = await supabase
+                    .from('place')
+                    .select('*');
+
+                if (placesError) {
+                    throw placesError;
+                }
+
+                const { data: weekdaysData, error: weekdaysError } = await supabase // Запрос к таблице weekdays
+                    .from('weekday')
+                    .select('*');
+
+                if (weekdaysError) {
+                    throw weekdaysError;
+                }
+
                 const donationWithDetails = hoursData.map((hour: any) => {
                     const day = daysData.find((day: any) => day.day_id === hour.day_id);
                     const month = monthsData.find((month: any) => month.month_id === day.month_id);
+                    const place = placesData.find((place: any) => place.id_place === month.id_place);
+                    const weekday = weekdaysData.find((weekday: any) => weekday.weekday_id === day.weekday_id); // Получаем день недели
                     return {
+                        hour_id: hour.hour_id, // Добавляем ID записи
                         hour_value: hour.hour_value,
                         day_value: day.day_value,
                         month_name: month.month_name,
+                        place_address: place.address,
+                        weekday_name: weekday.weekday // Добавляем день недели к данным о донорстве
                     };
                 });
 
-                // Set the donation data with details to the state
                 setDonationData(donationWithDetails);
             } else {
-                setErrorMessage('Пользователь с указанным id_registration не найден');
+                setErrorMessage('Користувача с указанным id_registration не найден');
             }
         } catch (error) {
-            setErrorMessage('Ошибка при получении информации о пользователе');
+            setErrorMessage('Помилка при отриманні інформації про користувача');
+        }
+    };
+
+    const cancelDonation = async (hourId: number) => {
+        try {
+            await supabase
+                .from('hours')
+                .update({ id_registration: null })
+                .eq('hour_id', hourId);
+
+            // После отмены записи обновляем данные
+            fetchData();
+        } catch (error) {
+            setErrorMessage('Помилка при скасуванні запису');
         }
     };
 
@@ -84,9 +112,9 @@ const Donor = () => {
             <h2>Донор</h2>
             {userData && (
                 <div>
-                    <p>Имя: {userData.name}</p>
-                    <p>Фамилия: {userData.surname}</p>
-                    <p>Возраст: {userData.age}</p>
+                    <p>Ім'я: {userData.name}</p>
+                    <p>Прізвище: {userData.surname}</p>
+                    <p>Вік: {userData.age}</p>
                 </div>
             )}
             <h3>Записи на донорство:</h3>
@@ -94,7 +122,14 @@ const Donor = () => {
                 <ul>
                     {donationData.map((donation: any, index: number) => (
                         <li key={index}>
-                            Місяць: {donation.month_name}, День: {donation.day_value}, Час: {donation.hour_value}
+                            <p>
+                                Місце: {donation.place_address}, <br/>
+                                Місяць: {donation.month_name},<br/>
+                                День: {donation.weekday_name}, {donation.day_value};<br/>
+                                Час: {donation.hour_value}<br/>
+                                <button onClick={() => cancelDonation(donation.hour_id)}>Скасувати запис</button>
+                            </p>
+
                         </li>
                     ))}
                 </ul>
@@ -104,5 +139,4 @@ const Donor = () => {
         </div>
     );
 };
-
 export {Donor};

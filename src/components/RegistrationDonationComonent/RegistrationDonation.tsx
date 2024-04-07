@@ -21,6 +21,7 @@ const RegistrationDonation = () => {
         fetchWeekdays(); // Вызываем функцию получения списка дней недели
     }, []);
 
+
     // Функция для получения списка мест
     const fetchPlaces = async () => {
         try {
@@ -75,12 +76,20 @@ const RegistrationDonation = () => {
             if (monthsError) {
                 throw monthsError;
             }
-            setMonths(monthsData);
+
+            const currentDate = new Date();
+            const filteredMonths = monthsData.filter(month => {
+                const monthIndex = new Date(Date.parse(month.month_value + ' 1, 2000')).getMonth();
+                const monthDate = new Date(currentDate.getFullYear(), monthIndex, month.month_value);
+                monthDate.setMonth(monthDate.getMonth() + 1);
+                return monthDate >= currentDate;
+            });
+
+            setMonths(filteredMonths);
         } catch (error) {
             setErrorMessage('Ошибка при получении месяцев');
         }
     };
-
     const handleMonthClick = async (monthId: number) => {
         try {
             const { data: daysData, error: daysError } = await supabase
@@ -91,7 +100,22 @@ const RegistrationDonation = () => {
             if (daysError) {
                 throw daysError;
             }
-            setDays(daysData);
+
+            // Получаем текущую дату
+            const currentDate = new Date();
+            // Получаем текущий месяц
+            const currentMonth = currentDate.getMonth() + 1;
+
+            let filteredDays = [];
+
+            // Если выбранный месяц совпадает с текущим, фильтруем дни только для текущего месяца
+            if (monthId === currentMonth) {
+                filteredDays = daysData.filter(day => day.day_value >= currentDate.getDate());
+            } else {
+                filteredDays = daysData;
+            }
+
+            setDays(filteredDays);
             setSelectedMonth(monthId);
             setSelectedDay(null);
             setSelectedHourId(null);
@@ -221,7 +245,7 @@ const RegistrationDonation = () => {
             )}
             {selectedHourId !== null && (
                 <>
-                    <button onClick={handle}>Записатися</button>
+                <button onClick={handle}>Записатися</button>
                 </>
             )}
             {isRecorded &&

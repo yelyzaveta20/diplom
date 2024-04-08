@@ -1,4 +1,4 @@
-import {supabase} from "./dT";
+import {supabase} from "../constans/dT";
 import {createContext, FC, ReactNode, useContext, useEffect, useState} from "react";
 import {useNavigate} from "react-router-dom";
 

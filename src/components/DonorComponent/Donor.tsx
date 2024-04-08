@@ -1,6 +1,6 @@
 import {FormEvent, useEffect, useState} from "react";
 import {supabase} from "../../constans/dT";
-import {useAuthContext} from "../../constans/AuthContext";
+import {useAuthContext} from "../../hoc/AuthContext";
 import {useParams} from "react-router-dom";
 import {IDonor} from "./InterfaseDonr";
 

@@ -2,7 +2,7 @@ import {NavLink, useLocation, useNavigate} from "react-router-dom";
 import css from './Header.module.css'
 import {FormEvent, useEffect, useState} from "react";
 import {supabase} from "../../constans/dT";
-import {useAuthContext} from "../../constans/AuthContext";
+import {useAuthContext} from "../../hoc/AuthContext";
 const Header = () => {
     const navigate = useNavigate();
     const {isAdmin,setIsAdmin, setIsUser, isUser} = useAuthContext();
@@ -39,14 +39,17 @@ const Header = () => {
             )}
 
             {isUser && (
-                <div className={css.navigator}>
-                    <NavLink to={`/registration-donation/${localStorage.getItem('id_registration')}`}>Зробити запис</NavLink>
-                    <button onClick={handleLogout}>Вийти</button>
-                    <div>
-                        <NavLink to={`/donor/${localStorage.getItem('id_registration')}`}><img alt={'account'}
-                            src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAu0lEQVR4nO2U0QnCMBRFzwQdQOufpcPoKrqG6CgSOoMWl1DoCIIt6G+k8AoaNKnk9UP0wv1JyjmkLy38SiaAARppAeSa8DNgnbZrqYbAvIB33WoIGo+g1hDYQAc9wUVDUHgE7Xyik3tuUYZSUrkxtdRowr83Y2ADVEAJJA97iaxV8szoU/gSuDlD3QFTefd7Z+8KLPrC1z0+LvumqxB8HgG30plPcFIQHH2CWLgN/Z8GFxwU4GVgzv/wlDuj6q8tGM8DawAAAABJRU5ErkJggg=="/>
+                <div className={css.navigator2}>
+                    <NavLink to={`/registration-donation/${localStorage.getItem('id_registration')}`}>Зробити
+                        запис на донорство крові</NavLink>
+                    <div className={css.home}>
+                        <NavLink to={`/donor/${localStorage.getItem('id_registration')}`}>
+                            <img alt={'account'}
+                                                                                               src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAu0lEQVR4nO2U0QnCMBRFzwQdQOufpcPoKrqG6CgSOoMWl1DoCIIt6G+k8AoaNKnk9UP0wv1JyjmkLy38SiaAARppAeSa8DNgnbZrqYbAvIB33WoIGo+g1hDYQAc9wUVDUHgE7Xyik3tuUYZSUrkxtdRowr83Y2ADVEAJJA97iaxV8szoU/gSuDlD3QFTefd7Z+8KLPrC1z0+LvumqxB8HgG30plPcFIQHH2CWLgN/Z8GFxwU4GVgzv/wlDuj6q8tGM8DawAAAABJRU5ErkJggg=="/>
                         </NavLink>
+                        <button className={css.homebutton} onClick={handleLogout}>Вийти</button>
                     </div>
+
                 </div>
             )}
 

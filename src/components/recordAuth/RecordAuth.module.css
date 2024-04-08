@@ -1,38 +1,34 @@
-.Login{
+.Auth{
     width: 100vw;
     height: 80vh;
     display: flex;
     justify-content: center;
     align-items: center;
 }
-.forming{
+.authinput{
     width: 30vw;
-    height: 40vh;
+    height: 45vh;
     border: 1px black solid;
     border-radius: 90px;
-   display: flex;
+    display: flex;
+    flex-wrap: wrap;
     justify-content: center;
-
+align-items: center;
     text-align: center;
     background: rgba(225, 149, 149, 0.45);
 }
-.submit{
-    width: 100px;
+.formauth{
+    width: 30vw;
+    height: 30vh;
 
 }
-.invite{
-    font-size: 30px;
+.authp{
+    font-size: 18px;
+    width: 25vw;
     font-weight: bold;
 }
-/*.div{*/
-/*    display: flex;*/
-/*    justify-content: center;*/
-/*    align-items: center;*/
-/*}*/
-.formbutton{
-    display: flex;
-    justify-content: space-evenly;
+.authbutton{
+    width: 120px;
+    font-size: 16px;
     margin-top: 20px;
-
-
 }

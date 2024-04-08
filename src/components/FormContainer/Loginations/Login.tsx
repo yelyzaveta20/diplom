@@ -4,7 +4,7 @@ import {FormEvent, useState} from "react";
 import css from './Login.module.css'
 import {Header} from "../../Header/Header";
 import {MainLayout} from "../../../layout";
-import {useAuthContext} from "../../../constans/AuthContext";
+import {useAuthContext} from "../../../hoc/AuthContext";
 
 const Login = () => {
     let navigate = useNavigate();
@@ -55,10 +55,10 @@ const Login = () => {
 
                 }
             } else {
-                setErrorMessage('Неправильный логин или пароль');
+                setErrorMessage('Неправильний логін або пароль');
             }
         } catch (error) {
-            setErrorMessage('Ошибка при проверке логина и пароля');
+            setErrorMessage('Помилка при перевірці логіна та пароля');
         }
     };
     const handleRegister = () => {
@@ -71,15 +71,15 @@ const Login = () => {
             <div className={css.Login}>
                 <div className={css.forming}>
                     <div className={css.div}>
-                        <p>Вход</p>
+                        <p className={css.invite}>Вход</p>
                         <form onSubmit={handleLogin}>
-                            <input type="text" placeholder="Введите ваш логин" value={login}
+                            <input type="text" placeholder="Введіть ваш логін" value={login}
                                    onChange={(e) => setLogin(e.target.value)} />
-                            <input type="password" placeholder="Введите ваш пароль" value={password}
+                            <input type="password" placeholder="Введіть ваш пароль" value={password}
                                    onChange={(e) => setPassword(e.target.value)} />
-                            <div>
-                                <button type="submit">Войти</button>
-                                <button type="button" onClick={handleRegister}>Зарегистрироваться</button>
+                            <div className={css.formbutton}>
+                                <button type="submit" className={css.submit}>Увійти</button>
+                                <button type="button" onClick={handleRegister}>Зареєструватися</button>
                             </div>
                         </form>
                         {errorMessage && <p>{errorMessage}</p>}

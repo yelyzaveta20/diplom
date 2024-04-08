@@ -1,6 +1,7 @@
 import {FormEvent, useState} from "react";
 import {useNavigate, useParams} from "react-router-dom";
 import {supabase} from "../../constans/dT";
+import css from './RecordAuth.module.css'
 
 const RecordAuth = () => {
     const navigate = useNavigate();
@@ -51,17 +52,22 @@ const RecordAuth = () => {
     };
 
     return (
-        <div>
-            <p>
-                Ім'я та прізвище має бути українськими літерами, а вік від 18 років
-            </p>
-            <form onSubmit={handleFormSubmit}>
-                <input type="text" placeholder="Введіть ваше ім'я" value={name} onChange={(e) => setName(e.target.value)} pattern="[A-Za-zА-Яа-яЁё]{2,20}" />
-                <input type="text" placeholder="Введіть ваше прізвище" value={surname} onChange={(e) => setSurname(e.target.value)} pattern="[A-Za-zА-Яа-яЁё]{2,20}"/>
-                <input type="text" placeholder="Введіть ваш вік" value={age} onChange={(e) => setAge(e.target.value)} pattern="[(1[8-9]|[2-9][0-9]|100)]"/>
-                <button type="submit">Зберегти</button>
-            </form>
-            {errorMessage && <p>{errorMessage}</p>}
+        <div className={css.Auth}>
+            <div className={css.authinput}>
+                <p className={css.authp}>
+                    Ім'я та прізвище має бути українськими літерами, а вік від 18 років
+                </p>
+                <form className={css.formauth} onSubmit={handleFormSubmit}>
+                    <input type="text" placeholder="Введіть ваше ім'я" value={name} onChange={(e) => setName(e.target.value)} pattern="[A-Za-zА-Яа-яЁё]{2,20}" />
+                    <input type="text" placeholder="Введіть ваше прізвище" value={surname} onChange={(e) => setSurname(e.target.value)} pattern="[A-Za-zА-Яа-яЁё]{2,20}"/>
+                    <input type="text" placeholder="Введіть ваш вік" value={age} onChange={(e) => setAge(e.target.value)} pattern="[(1[8-9]|[2-9][0-9]|100)]"/>
+                    <br/>
+                    <button className={css.authbutton} type="submit">Зберегти</button>
+                    {errorMessage && <p>{errorMessage}</p>}
+                </form>
+
+            </div>
+
         </div>
     );
 };

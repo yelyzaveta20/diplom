@@ -1,8 +1,8 @@
 import {useNavigate} from "react-router-dom";
 import {supabase} from "../../../constans/dT";
 import {FormEvent, useState} from "react";
-import {useAuthContext} from "../../../constans/AuthContext";
-
+import {useAuthContext} from "../../../hoc/AuthContext";
+import css from './Register.module.css'
 
 const Register = () => {
     let navigate = useNavigate();
@@ -12,7 +12,10 @@ const Register = () => {
     const {isAdmin,setIsAdmin, setIsUser, isUser} = useAuthContext();
     const handleRegister = async (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-
+        if (!login.trim() || !password.trim()) {
+            setErrorMessage('Будь-ласка, заповніть усі поля');
+            return;
+        }
         try {
             // Check if user with the same login already exists
             const { data: existingUsers, error: existingUsersError } = await supabase
@@ -60,18 +63,24 @@ const Register = () => {
     };
 
     return (
-        <div>
-            <div>
-                <p>Регистрация</p>
-                {errorMessage && <p>{errorMessage}</p>}
-                <form onSubmit={handleRegister}>
-                    <input type="text" placeholder="Введите ваш логин" value={login}
-                           onChange={(e) => setLogin(e.target.value)}/>
-                    <input type="password" placeholder="Введите ваш пароль" value={password}
-                           onChange={(e) => setPassword(e.target.value)}/>
-                    <button type="submit">Зарегистрироваться</button>
-                    <button type="button" onClick={handleLogin}>Уже есть аккаунт? Войти</button>
-                </form>
+        <div className={css.Register}>
+            <div className={css.forming}>
+                <div className={css.div}>
+                    <p className={css.invite}>Реєстрація</p>
+                    {errorMessage && <p>{errorMessage}</p>}
+                    <form onSubmit={handleRegister}>
+                        <input className={css.forminput} type="text" placeholder="Введіть ваш логін" value={login}
+                               onChange={(e) => setLogin(e.target.value)}/>
+                        <input className={css.forminput} type="password" placeholder="Введіть ваш пароль" value={password}
+                               onChange={(e) => setPassword(e.target.value)}/>
+                        <div className={css.formbutton}>
+                            <button type="submit">Зареєструватися</button>
+                            <button type="button" onClick={handleLogin}>Вже є аккаунт? Увійти</button>
+                        </div>
+
+                    </form>
+                </div>
+
             </div>
 
         </div>

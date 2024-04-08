@@ -22,3 +22,43 @@ a{
 .Header a[class='active'] {
     color: #910863;
 }
+button{
+    background: rgb(63,94,251);
+    background: radial-gradient(circle, rgba(63,94,251,0.5013655120251226) 0%, rgba(252,70,107,0.4985643915769433) 100%);
+    color: #ffffff;
+    height: 30px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: bold;
+    border: 1px #41033c solid;
+}
+input{
+    background: rgba(120, 8, 145, 0.13);
+    width: 320px;
+    height: 35px;
+    color: #010115;
+    font-family: Arial;
+    border-radius: 25px;
+    margin-top: 15px;
+    font-size: 16px;
+    border: 1px #41033c solid;
+}
+.navigator2{
+    display: flex;
+    justify-content: space-between;
+    width: 90vw;
+}
+.home{
+ display: flex;
+    width: 20vw;
+    justify-content: space-between;
+}
+.homebutton{
+    width: 100px;
+    height: 30px;
+    font-size: 17px;
+}
+img{
+    width: 30px;
+    margin-top: 2px;
+}

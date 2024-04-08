@@ -2,7 +2,7 @@ import {NavLink} from "react-router-dom";
 
 const Records = () => {
     return (
-        <div>
+        <div >
             <h1>Шановний доноре!</h1>
 
             <h2>

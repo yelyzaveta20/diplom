@@ -1,6 +1,6 @@
-import {useAuthContext} from "../constans/AuthContext";
+import {useAuthContext} from "../../hoc/AuthContext";
 import {NavLink} from "react-router-dom";
-import {supabase} from "../constans/dT";
+import {supabase} from "../../constans/dT";
 import {useEffect, useState} from "react";
 
 const Admin = () => {

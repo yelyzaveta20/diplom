@@ -2,6 +2,11 @@ import {useAuthContext} from "../../hoc/AuthContext";
 import {NavLink} from "react-router-dom";
 import {supabase} from "../../constans/dT";
 import {useEffect, useState} from "react";
+import jsPDF from "jspdf";
+import autoTable from "jspdf-autotable";
+import customFont from './custom_font.js'
+
+
 
 const Admin = () => {
     const { isAdmin } = useAuthContext();
@@ -42,7 +47,7 @@ const Admin = () => {
 
                 const { data: month, error: monthError } = await supabase
                     .from('months')
-                    .select('month_name, id_place')
+                    .select('month_name, id_place, month_value')
                     .eq('month_id', day.month_id)
                     .single();
 
@@ -52,7 +57,7 @@ const Admin = () => {
 
                 const { data: place, error: placeError } = await supabase
                     .from('place')
-                    .select('address')
+                    .select('address, eng_address')
                     .eq('id_place', month.id_place)
                     .single();
 
@@ -75,7 +80,9 @@ const Admin = () => {
                     hour_value: hour.hour_value,
                     day_value: day.day_value,
                     month_name: month.month_name,
+                    month_value:month.month_value,
                     place_address: place.address,
+                    eng_address:place.eng_address,
                     user: user,
                     rented: hour.rented
                 };
@@ -119,6 +126,47 @@ const Admin = () => {
             setErrorMessage('Ошибка при обновлении записи: ');
         }
     };
+
+    const generatePDF = () => {
+        const doc = new jsPDF();
+
+        // Додаємо шрифт до jsPDF
+        doc.addFileToVFS('CustomFont.ttf', customFont);
+        doc.addFont('CustomFont.ttf', 'CustomFont', 'normal');
+        doc.setFont('CustomFont'); // Встановлюємо шрифт для документу
+
+        const tableColumn = ["Time", "Day", "Month", "Place", "Donor", "Status"];
+        const tableRows:any = [];
+
+        rentedData.forEach(timeEntry => {
+            const timeData = [
+                timeEntry.hour_value,
+                timeEntry.day_value,
+                timeEntry.month_value,
+                timeEntry.eng_address,
+                `${timeEntry.user.name} ${timeEntry.user.surname}, Age: ${timeEntry.user.age}`,
+                "Rented"
+            ];
+            tableRows.push(timeData);
+        });
+
+        notRentedData.forEach(timeEntry => {
+            const timeData = [
+                timeEntry.hour_value,
+                timeEntry.day_value,
+                timeEntry.month_value,
+                timeEntry.eng_address,
+                `${timeEntry.user.name} ${timeEntry.user.surname}, Age: ${timeEntry.user.age}`,
+                "Not Rented"
+            ];
+            tableRows.push(timeData);
+        });
+
+        doc.text("Reporting of donors", 14, 15);
+        autoTable(doc, { head: [tableColumn], body: tableRows, startY: 20 });
+        doc.save("donors_report.pdf");
+    };
+
     return (
         <div>
             {isAdmin ? (
@@ -129,12 +177,12 @@ const Admin = () => {
                         <ul>
                             {notRentedData.map((timeEntry, index) => (
                                 <li key={index}>
-                                    Время: {timeEntry.hour_value}, День: {timeEntry.day_value},
-                                    Месяц: {timeEntry.month_name}, Место: {timeEntry.place_address}
+                                    Час: {timeEntry.hour_value}, День: {timeEntry.day_value},
+                                    Місяць: {timeEntry.month_name}, Місце: {timeEntry.place_address}
                                     {timeEntry.user && (
                                         <div>
-                                            Пользователь: {timeEntry.user.name} {timeEntry.user.surname},
-                                            Возраст: {timeEntry.user.age}
+                                            Донор: {timeEntry.user.name} {timeEntry.user.surname},
+                                            Вік: {timeEntry.user.age}
                                         </div>
                                     )}
                                     <button onClick={() => markAsRented(timeEntry.hour_id)}>Здано кров</button>
@@ -151,12 +199,12 @@ const Admin = () => {
                         <ul>
                             {rentedData.map((timeEntry, index) => (
                                 <li key={index}>
-                                    Время: {timeEntry.hour_value}, День: {timeEntry.day_value},
-                                    Месяц: {timeEntry.month_name}, Место: {timeEntry.place_address}
+                                    Час: {timeEntry.hour_value}, День: {timeEntry.day_value},
+                                    Місяць: {timeEntry.month_name}, Місце: {timeEntry.place_address}
                                     {timeEntry.user && (
                                         <div>
-                                            Пользователь: {timeEntry.user.name} {timeEntry.user.surname},
-                                            Возраст: {timeEntry.user.age}
+                                            Донор: {timeEntry.user.name} {timeEntry.user.surname},
+                                            Вік: {timeEntry.user.age}
                                         </div>
                                     )}
                                     <hr/>
@@ -164,7 +212,7 @@ const Admin = () => {
                             ))}
                         </ul>
                     ) : (
-                        <p>Доноров здесь нет</p>
+                        <p>Донорів немає</p>
                     )}
                 </>
             ) : (
@@ -172,7 +220,10 @@ const Admin = () => {
                     <NavLink to={'/login'}>Авторизуйтесь</NavLink>, чтобы просматривать данные администратора.
                 </p>
             )}
+            <button onClick={generatePDF}>Експорт у PDF</button>
             {errorMessage && <p>{errorMessage}</p>}
+
+
         </div>
     );
 };

@@ -23,21 +23,29 @@ a{
     color: #910863;
 }
 button{
-    background: rgb(63,94,251);
-    background: radial-gradient(circle, rgba(63,94,251,0.5013655120251226) 0%, rgba(252,70,107,0.4985643915769433) 100%);
+    background-color:#ce366b;
     color: #ffffff;
-    height: 30px;
+    border: none;
+    padding: 8px 16px;
+    margin-right: 10px;
+    margin-bottom: 10px;
+    cursor: pointer;
+
+    font-size: 18px;
+    transition: background-color 0.3s;
+    font-family: "Crimson Text", serif;
     border-radius: 20px;
-    font-size: 14px;
-    font-weight: bold;
-    border: 1px #41033c solid;
+
+}
+button:hover {
+    background-color: #ef168a;
 }
 input{
     background: rgba(120, 8, 145, 0.13);
     width: 320px;
     height: 35px;
     color: #010115;
-    font-family: Arial;
+    /*font-family: Arial;*/
     border-radius: 25px;
     margin-top: 15px;
     font-size: 16px;
@@ -61,4 +69,7 @@ input{
 img{
     width: 30px;
     margin-top: 2px;
+}
+p, h1, h2, h3, h4, li, input{
+    font-family: "Crimson Text", serif;
 }

@@ -9,15 +9,26 @@ const Register = () => {
     const [login, setLogin] = useState('');
     const [password, setPassword] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
-    const {isAdmin,setIsAdmin, setIsUser, isUser} = useAuthContext();
+    const { setIsAdmin, setIsUser } = useAuthContext();
+
+    const isValidEmail = (email:any) => {
+        return /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(email);
+    };
+
     const handleRegister = async (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
+
         if (!login.trim() || !password.trim()) {
             setErrorMessage('Будь-ласка, заповніть усі поля');
             return;
         }
+
+        if (!isValidEmail(login)) {
+            setErrorMessage('Будь-ласка, введіть коректну електронну пошту');
+            return;
+        }
+
         try {
-            // Check if user with the same login already exists
             const { data: existingUsers, error: existingUsersError } = await supabase
                 .from('registration')
                 .select()
@@ -28,15 +39,15 @@ const Register = () => {
             }
 
             if (existingUsers && existingUsers.length > 0) {
-                setErrorMessage('Пользователь с таким именем уже существует');
+                setErrorMessage('Користувач іменем вже існує');
                 return;
             }
-            const { data:user, error } = await supabase
+
+            const { data: user, error } = await supabase
                 .from('registration')
-                .insert([
-                    { login: login, password: password },
-                ])
-                .select()
+                .insert([{ login, password }])
+                .select('id_registration')
+                .single();
 
             if (error) {
                 throw error;
@@ -47,14 +58,9 @@ const Register = () => {
             setIsAdmin(false);
             setIsUser(true);
 
-            navigate(`/record-auth/${user[0].id_registration}`); // Переходим на страницу входа после успешной регистрации
+            navigate(`/record-auth/${user.id_registration}`); // Переходим на страницу входа после успешной регистрации
         } catch (error) {
-            if (error === '23505') {
-                setErrorMessage('Пользователь с таким логином уже существует');
-            } else {
-                setErrorMessage('Произошла ошибка при регистрации');
-            }
-
+            setErrorMessage('Виникла помилка при реєстрації');
         }
     };
 
@@ -69,22 +75,30 @@ const Register = () => {
                     <p className={css.invite}>Реєстрація</p>
                     {errorMessage && <p>{errorMessage}</p>}
                     <form onSubmit={handleRegister}>
-                        <input className={css.forminput} type="text" placeholder="Введіть ваш логін" value={login}
-                               onChange={(e) => setLogin(e.target.value)}/>
-                        <input className={css.forminput} type="password" placeholder="Введіть ваш пароль" value={password}
-                               onChange={(e) => setPassword(e.target.value)}/>
+                        <input
+                            className={css.forminput}
+                            type="text"
+                            placeholder="Введіть вашу електронну пошту"
+                            value={login}
+                            onChange={(e) => setLogin(e.target.value)}
+                        />
+                        <input
+                            className={css.forminput}
+                            type="password"
+                            placeholder="Введіть ваш пароль"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                        />
                         <div className={css.formbutton}>
                             <button type="submit">Зареєструватися</button>
                             <button type="button" onClick={handleLogin}>Вже є аккаунт? Увійти</button>
                         </div>
-
                     </form>
                 </div>
-
             </div>
-
         </div>
     );
 };
+
 
 export {Register};

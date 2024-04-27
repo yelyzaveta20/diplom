@@ -1,0 +1,111 @@
+.container {
+    padding: 20px;
+    font-family: Arial, sans-serif;
+}
+
+.header {
+    margin-bottom: 20px;
+}
+
+.selectBox {
+    margin: 10px 0;
+}
+
+.list {
+    list-style-type: none;
+    padding: 0;
+}
+
+.listItem {
+    margin-bottom: 10px;
+    padding: 10px;
+    background-color: #f7f7f7;
+    border: 1px solid #ccc;
+}
+
+.buttons {
+    margin-top: 10px;
+}
+
+.button {
+    margin-right: 5px;
+    padding: 5px 10px;
+    /*background-color: #007bff;*/
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+/*.button:hover {*/
+/*    background-color: #0056b3;*/
+/*}*/
+
+.reportSection {
+    margin-top: 20px;
+    padding: 10px;
+    background-color: #f0f0f0;
+    border: 1px solid #ddd;
+}
+
+.reportOptions {
+    margin-bottom: 10px;
+    color: #2b012d;
+    font-weight: bold;
+
+}
+
+.selectBox {
+    margin: 20px 0;
+    padding: 5px;
+    background-color: #ffffff;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.select {
+    width: 79%;
+    padding: 8px 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background-color: #fff;
+    box-shadow: inset 0 1px 3px #eee;
+    font-size: 16px;
+    color: #333;
+
+}
+
+.select:hover {
+    border-color: #bbb;
+}
+
+.select:focus {
+    outline: none;
+    /*border-color: #007bff;*/
+    /*box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);*/
+}
+
+
+
+
+.donationSections {
+    display: flex;
+    justify-content: space-between; /* Spaces the sections nicely apart */
+    align-items: flex-start; /* Aligns sections at their top edge */
+    width: 100%; /* Ensures the container fills its parent's width */
+}
+
+.section {
+    width: 49%; /* Slightly less than half the container width to fit side by side */
+    padding: 10px;
+    background-color: #f7f7f7;
+    border: 1px solid #ccc;
+}
+
+/* Ensure other styles do not interfere */
+.selectBox, .list, .reportSection {
+    width: 100%; /* Full width to maintain consistent layout */
+}
+.input{
+    font-family: "Crimson Text", serif;
+}

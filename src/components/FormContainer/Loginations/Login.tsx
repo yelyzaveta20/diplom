@@ -73,9 +73,9 @@ const Login = () => {
                     <div className={css.div}>
                         <p className={css.invite}>Вход</p>
                         <form onSubmit={handleLogin}>
-                            <input type="text" placeholder="Введіть ваш логін" value={login}
+                            <input type="text" placeholder="Введіть ваш логін" value={login} className={css.input}
                                    onChange={(e) => setLogin(e.target.value)} />
-                            <input type="password" placeholder="Введіть ваш пароль" value={password}
+                            <input type="password" placeholder="Введіть ваш пароль" value={password} className={css.input}
                                    onChange={(e) => setPassword(e.target.value)} />
                             <div className={css.formbutton}>
                                 <button type="submit" className={css.submit}>Увійти</button>

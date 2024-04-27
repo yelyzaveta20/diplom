@@ -1,6 +1,7 @@
 import {useEffect, useState} from "react";
 import {supabase} from "../../constans/dT";
 import {NavLink, useParams} from "react-router-dom";
+import css from './RegistrationDonation.module.css'
 
 const RegistrationDonation = () => {
     const { id_registration } = useParams<{ id_registration: string }>();
@@ -171,38 +172,43 @@ const RegistrationDonation = () => {
     };
 
     return (
-        <div>
-            <h2>Місце</h2>
+        <div className={css.container}>
+
+            <h2 className={css.heading}>Місце:</h2>
             <div>
                 {places.map(place => (
                     <button
                         key={place.id_place}
                         onClick={() => handlePlaceClick(place.id_place)}
-                        style={{marginRight: '10px', marginBottom: '10px'}}
+                        className={css.button}
                     >
                         {place.address}
                     </button>
                 ))}
             </div>
-            {
-                selectedPlace && (
-                    <>
-                        <h2>Місяць</h2>
+            {selectedPlace && (
+
+                < >
+                    <hr className={css.hr}/>
+                    <h2 className={`${css.heading} `}>Місяць:</h2>
+                    <div className={css.monthSection}>
                         {months.map(month => (
                             <button
                                 key={month.month_id}
                                 onClick={() => handleMonthClick(month.month_id)}
-                                style={{marginRight: '10px', marginBottom: '10px'}}
+                                className={css.button}
                             >
                                 {month.month_name}
                             </button>
                         ))}
-                    </>)
-            }
+                    </div>
+                </>
+            )}
 
             {selectedMonth && (
                 <>
-                    <h2>Дні</h2>
+                    <hr className={css.hr}/>
+                    <h2 className={css.heading}>Дні:</h2>
                     <div>
                         {days.length > 0 ? (
                             days.map(day => {
@@ -211,7 +217,7 @@ const RegistrationDonation = () => {
                                     <button
                                         key={day.day_id}
                                         onClick={() => handleDayClick(day.day_id)}
-                                        style={{marginRight: '10px', marginBottom: '10px'}}
+                                        className={css.button}
                                     >
                                         День {day.day_value} ({weekday && weekday.weekday})
                                     </button>
@@ -223,16 +229,18 @@ const RegistrationDonation = () => {
                     </div>
                 </>
             )}
+
             {selectedDay && (
                 <>
-                    <h2>Час для запису</h2>
+                    <hr className={css.hr}/>
+                    <h2 className={css.heading}>Час для запису:</h2>
                     {hours.length > 0 ? (
                         <ul>
                             {hours.map(hour => (
                                 <button
                                     key={hour.hour_id}
                                     onClick={() => handleHourClick(hour.hour_id)}
-                                    style={{marginRight: '10px', marginBottom: '10px'}}
+                                    className={css.button}
                                 >
                                     Час {hour.hour_value}
                                 </button>
@@ -245,16 +253,18 @@ const RegistrationDonation = () => {
             )}
             {selectedHourId !== null && (
                 <>
-                <button onClick={handle}>Записатися</button>
+                    <button onClick={handle} className={css.buttonYes}>Записатися</button>
                 </>
             )}
             {isRecorded &&
-                <p>Запис успішно зроблено, перейдіть до особистого кабінету щоб переглянути інфорацію <NavLink
-                    to={`/donor/${localStorage.getItem('id_registration')}`}>
-                    <img alt={'account'}
-                         src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAu0lEQVR4nO2U0QnCMBRFzwQdQOufpcPoKrqG6CgSOoMWl1DoCIIt6G+k8AoaNKnk9UP0wv1JyjmkLy38SiaAARppAeSa8DNgnbZrqYbAvIB33WoIGo+g1hDYQAc9wUVDUHgE7Xyik3tuUYZSUrkxtdRowr83Y2ADVEAJJA97iaxV8szoU/gSuDlD3QFTefd7Z+8KLPrC1z0+LvumqxB8HgG30plPcFIQHH2CWLgN/Z8GFxwU4GVgzv/wlDuj6q8tGM8DawAAAABJRU5ErkJggg=="/>
-                </NavLink></p>}
-            {errorMessage && <p>{errorMessage}</p>}
+                <p className={css.message}>Запис успішно зроблено, перейдіть до особистого кабінету щоб переглянути
+                    інформацію <NavLink
+                        to={`/donor/${localStorage.getItem('id_registration')}`} className={css.navLink}>
+                        <img alt={'account'}
+                             src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAu0lEQVR4nO2U0QnCMBRFzwQdQOufpcPoKrqG6CgSOoMWl1DoCIIt6G+k8AoaNKnk9UP0wv1JyjmkLy38SiaAARppAeSa8DNgnbZrqYbAvIB33WoIGo+g1hDYQAc9wUVDUHgE7Xyik3tuUYZSUrkxtdRowr83Y2ADVEAJJA97iaxV8szoU/gSuDlD3QFTefd7Z+8KLPrC1z0+LvumqxB8HgG30plPcFIQHH2CWLgN/Z8GFxwU4GVgzv/wlDuj6q8tGM8DawAAAABJRU5ErkJggg=="/>
+                    </NavLink></p>
+            }
+            {errorMessage && <p className={css.error}>{errorMessage}</p>}
         </div>
     );
 };

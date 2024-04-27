@@ -1,0 +1,68 @@
+.container {
+    padding: 20px;
+    font-family: 'Arial', sans-serif;
+    color: #333;
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Centers content horizontally */
+}
+.monthSection {
+    display: flex;
+    align-items: center; /* Aligns items vertically in the center */
+    flex-wrap: wrap; /* Allows items to wrap onto the next line */
+    margin-bottom: 20px; /* Space below the section */
+}
+
+.buttonYes{
+    background:#b3003f;
+    width: 130px;
+    font-size: 18px;
+}
+.heading {
+    color: #b3003f;
+    margin-bottom: 0; /* Reset margin-bottom as it is now managed by the container */
+    text-align: center; /* Keeps text centered within each heading */
+    flex-grow: 1; /* Each heading grows equally to fill the container */
+    font-size: 30px;
+    font-family: "Crimson Text", serif;
+}
+
+.button {
+    background-color:#dc7393;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    margin-right: 10px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 17px;
+    transition: background-color 0.3s;
+}
+
+
+.message {
+    color: #2d0124;
+    margin-top: 20px;
+    text-align: center; /* Center align messages */
+}
+
+
+.navLink {
+    display: inline-block;
+    margin-top: 10px;
+    color: #f3118a;
+    text-decoration: none;
+    text-align: center; /* Ensures the navLink text is centered */
+}
+
+.navLink img {
+    vertical-align: middle;
+    margin-left: 5px;
+}
+
+.hr {
+    border-top: 1px solid #ccc;
+    width: 80%; /* Restrict the width of hr to 80% of its container */
+    margin: 20px auto; /* Center hr horizontally and add vertical space */
+}

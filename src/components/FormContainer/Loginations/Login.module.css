@@ -12,27 +12,22 @@
     border-radius: 90px;
    display: flex;
     justify-content: center;
-
     text-align: center;
     background: rgba(225, 149, 149, 0.45);
 }
 .submit{
     width: 100px;
-
 }
 .invite{
     font-size: 30px;
     font-weight: bold;
 }
-/*.div{*/
-/*    display: flex;*/
-/*    justify-content: center;*/
-/*    align-items: center;*/
-/*}*/
+
 .formbutton{
     display: flex;
     justify-content: space-evenly;
     margin-top: 20px;
-
-
+}
+.input{
+    width: 340px;
 }

@@ -1,6 +1,16 @@
 body{
     overflow-x: hidden;
 }
+.ImageLOGO{
+    width: 60px;
+}
+.lodo{
+    display: flex;
+}
+
+.navigator{
+    margin-top: 25px;
+}
 .Header{
     /*width: 100vw;*/
     display: flex;
@@ -55,6 +65,7 @@ input{
     display: flex;
     justify-content: space-between;
     width: 90vw;
+    margin-top: 25px;
 }
 .home{
  display: flex;

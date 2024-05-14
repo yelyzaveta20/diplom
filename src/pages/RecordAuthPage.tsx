@@ -1,4 +1,4 @@
-import {RecordAuth} from "../components/recordAuth/RecordAuth";
+import {RecordAuth} from "../components/RecordAuth/RecordAuth";
 
 const RecordAuthPage = () => {
     return (

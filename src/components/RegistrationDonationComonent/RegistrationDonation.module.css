@@ -66,3 +66,8 @@
     width: 80%; /* Restrict the width of hr to 80% of its container */
     margin: 20px auto; /* Center hr horizontally and add vertical space */
 }
+.messege{
+    color: #5093c0;
+    border-bottom: #5093c0 1px solid;
+    font-size: 20px;
+}

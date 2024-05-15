@@ -17,9 +17,13 @@ const RegistrationDonation = () => {
     const [selectedPlace, setSelectedPlace] = useState<number | null>(null);
     const [weekdays, setWeekdays] = useState<any[]>([]); // Состояние для хранения списка дней недели
 
+
+
+
     useEffect(() => {
         fetchPlaces(); // Вызываем функцию получения списка мест
         fetchWeekdays(); // Вызываем функцию получения списка дней недели
+
     }, []);
 
 
@@ -57,6 +61,7 @@ const RegistrationDonation = () => {
 
     // Функция для обработки выбора места
     const handlePlaceClick = (placeId: number) => {
+
         setSelectedPlace(placeId);
         setMonths([]);
         setSelectedMonth(null);
@@ -106,12 +111,16 @@ const RegistrationDonation = () => {
             const currentDate = new Date();
             // Получаем текущий месяц
             const currentMonth = currentDate.getMonth() + 1;
+            // Получаем текущий день
+            const currentDay = currentDate.getDate();
 
             let filteredDays = [];
 
-            // Если выбранный месяц совпадает с текущим, фильтруем дни только для текущего месяца
+            // Если выбранный месяц совпадает с текущим, фильтруем дни только для будущих дней
             if (monthId === currentMonth) {
-                filteredDays = daysData.filter(day => day.day_value >= currentDate.getDate());
+                filteredDays = daysData.filter(day => {
+                    return day.day_value > currentDay;
+                });
             } else {
                 filteredDays = daysData;
             }
@@ -136,7 +145,16 @@ const RegistrationDonation = () => {
             if (hoursError) {
                 throw hoursError;
             }
-            setHours(hoursData);
+
+            // Преобразуем строки времени в объекты времени и сортируем по возрастанию
+            const sortedHoursData = hoursData
+                .map(hour => ({ ...hour, hour_value: new Date(`2000-01-01T${hour.hour_value}`).getTime() }))
+                .sort((a, b) => {
+                    return a.hour_value - b.hour_value;
+                })
+                .map(hour => ({ ...hour, hour_value: new Date(hour.hour_value).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) }));
+
+            setHours(sortedHoursData);
             setSelectedDay(dayId);
             setSelectedHourId(null);
             setErrorMessage('');
@@ -145,6 +163,7 @@ const RegistrationDonation = () => {
             setErrorMessage('На выбранную дату записей нет');
         }
     };
+
 
     const handleHourClick = (hourId: number) => {
         setSelectedHourId(hourId);
@@ -173,7 +192,7 @@ const RegistrationDonation = () => {
 
     return (
         <div className={css.container}>
-
+            <h4 className={css.messege}>Донорство можно проводити не раніше ніж через 30 днів після останнього донорства!</h4>
             <h2 className={css.heading}>Місце:</h2>
             <div>
                 {places.map(place => (

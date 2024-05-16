@@ -186,7 +186,7 @@ const RegistrationDonation = () => {
             setErrorMessage('');
         } catch (error) {
             setIsRecorded(false);
-            setErrorMessage('Ошибка при добавлении записи');
+            setErrorMessage('помилка при додаванні запису');
         }
     };
 
